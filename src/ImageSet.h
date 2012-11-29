@@ -51,14 +51,10 @@ public:
 	*/
 
 	void checkForNums(int n);
-	void makeClassAggregate(int n);
+	std::vector< std::vector<double> >  makeClassAggregate(int n);
 	void lineUpCheck();
 	void populateLineUp(bool training);
 	void classifyLineUp();
-
-	/*
-	aggregate functions:
-	- generates the aggregate 
 
 };
 

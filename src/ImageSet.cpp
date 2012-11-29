@@ -86,7 +86,7 @@ std::vector< std::vector<double> > ImageSet::makeClassAggregate(int n)		//return
 			classDefinedSet.push_back(*it);
 	
 	}
-	
+
 	for (std::vector<Image>::iterator it = classDefinedSet.begin(); it != classDefinedSet.end(); it++) /*iterates through the class-
 													   defined set and constructs
 													   an "average" digit  using
@@ -94,18 +94,35 @@ std::vector< std::vector<double> > ImageSet::makeClassAggregate(int n)		//return
 													   relative character frequency
 													   ratios*/
 	{													
+	int blankCount = 0;
+	int edgeCount = 0;
+	int mainCount = 0;
 
 		for (int i = 0; i < it->getDimension(); i++)
 		{
 			for (int j = 0; j < it->getDimension(); j++)
 			{
-				 
+				std::cout << it->imageData[i][j] << " ";
+				switch(it->imageData[i][j])
+				{
+					case(' '):
+						blankCount++;
+						break;
+					case('+'):
+						edgeCount++;
+						break;
+					case('#'):
+						mainCount++;
+						break;
+				}
 				
 			}
-
+			std::cout << "\n";
 		}
+	std::cout << blankCount << "  " << edgeCount << "  " << mainCount << "\n";
+	std::cout << "Counts aggregated!\n";
 
 	}
-
+	std::cout << "Iterator exited!\n";
 
 };

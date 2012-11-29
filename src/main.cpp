@@ -1,6 +1,7 @@
 #include"Image.h"
 #include"ImageSet.h"
 #include<iostream>
+#include<vector>
 
 int main(int argc, char** argv)
 {
@@ -12,7 +13,10 @@ int main(int argc, char** argv)
 	std::cin >> testNum;
 	bool test = (testNum == 0) ? false:true;
 	ImageSet testSet = ImageSet(test);
-	testSet.checkForNums(num);
+	std::cout << "Didn't segfault!\n";
+	//testSet.checkForNums(num);
+	testSet.makeClassAggregate(num);
+	std::cout << "Did segfault :(\n";
 
 return 0;
 }

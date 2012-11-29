@@ -20,10 +20,10 @@ private:
 	int predictedClass;
 	int realClass;
 	std::vector<std::string> stringyImage;
-	std::vector< std::vector<char> > imageData;
 
 public:
 	
+	std::vector< std::vector<char> > imageData;
 	/*
 	constructors:
 	- default constructor
