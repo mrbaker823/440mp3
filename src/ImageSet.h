@@ -51,7 +51,7 @@ public:
 	*/
 
 	void checkForNums(int n);
-	std::vector< std::vector<double> >  makeClassAggregate(int n);
+	std::vector< std::vector<char> >  makeClassAggregate(int n);
 	void lineUpCheck();
 	void populateLineUp(bool training);
 	void classifyLineUp();

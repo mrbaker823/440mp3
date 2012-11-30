@@ -1,4 +1,5 @@
 #include"ImageSet.h"
+#include<math.h>
 #include<stdio.h>
 #include<stdlib.h>
 #include<fstream>
@@ -12,10 +13,10 @@ void ImageSet::populateLineUp(bool training)
 	//if training == true, then set paths to training sets. else, set path to test sets
 	
 	std::string charLine, labelLine;
-	const char* imagePath;
+	const char* imagePath;					//set to const char* for fstream ease
 	const char* labelPath;
 
-	switch (training)
+	switch (training)					//if train = true; use training set. else, use test set
 	{
 		case true:
 			imagePath = "../data/trainingimages";
@@ -72,57 +73,61 @@ void ImageSet::checkForNums(int n)   			//(debug) finds all images with a certai
 	}
 };
 
-std::vector< std::vector<double> > ImageSet::makeClassAggregate(int n)		//returns a 2d vector of doubles representing probabilities of the training set
+std::vector< std::vector<char> > ImageSet::makeClassAggregate(int n)		//returns a 2d vector of doubles representing probabilities of the training set
 {
 	std::vector<Image> classDefinedSet;
 
-	std::vector<double> classDefinedProbabilityLine;			//used in construction of the return vector
-	std::vector< std::vector<double> > classDefinedProbabilitySet;		//the return vector
+	std::vector< std::vector<char> > classDefinedProbabilitySet;		//the return vector
 	
 	for (std::vector<Image>::iterator it = imageLineUp.begin(); it != imageLineUp.end(); it++)   	/*constructs a vector of only
 													images with a certain label*/
 	{
 		if (it->getRealClass() == n)
 			classDefinedSet.push_back(*it);
-	
 	}
 
-	for (std::vector<Image>::iterator it = classDefinedSet.begin(); it != classDefinedSet.end(); it++) /*iterates through the class-
-													   defined set and constructs
-													   an "average" digit  using
-													   laplacian smoothing of the 
-													   relative character frequency
-													   ratios*/
-	{													
-	int blankCount = 0;
-	int edgeCount = 0;
-	int mainCount = 0;
-
-		for (int i = 0; i < it->getDimension(); i++)
+	for (int i = 0; i < 28; i++)						//hardcoded 28; we know the size
+	{
+		std::vector<char> classDefinedProbabilityLine;		//the string-by-string of the returned vector
+		for (int j = 0; j < 28; j++)
 		{
-			for (int j = 0; j < it->getDimension(); j++)
+			double spaceChars = 0;					//the vars for char counts
+			double edgeChars = 0;					
+			double mainChars = 0;
+			for (int setVar = 0; setVar < classDefinedSet.size(); setVar++) //iterate on the same pixel in the imageSet 
 			{
-				std::cout << it->imageData[i][j] << " ";
-				switch(it->imageData[i][j])
+				switch(classDefinedSet[setVar].getCharAt(i,j))	//increments the char count based on identified character
 				{
 					case(' '):
-						blankCount++;
+						spaceChars++;
 						break;
 					case('+'):
-						edgeCount++;
+						edgeChars++;
 						break;
 					case('#'):
-						mainCount++;
+						mainChars++;
 						break;
-				}
+					default:
+						spaceChars++;
 				
+				}
 			}
-			std::cout << "\n";
+			double total = spaceChars+edgeChars+mainChars;      				//calculating laplacian 
+			double spaceProb = spaceChars/total;
+			double edgeProb = edgeChars/total;
+			double mainProb = mainChars/total;
+			
+			if (spaceProb >= edgeProb && spaceProb >= mainProb)
+				classDefinedProbabilityLine.push_back(' ');
+			else if (mainProb > spaceProb && mainProb > edgeProb)
+				classDefinedProbabilityLine.push_back('#');
+			else 
+				classDefinedProbabilityLine.push_back('+');
+
+		
 		}
-	std::cout << blankCount << "  " << edgeCount << "  " << mainCount << "\n";
-	std::cout << "Counts aggregated!\n";
+		classDefinedProbabilitySet.push_back(classDefinedProbabilityLine);
+	}	
 
-	}
-	std::cout << "Iterator exited!\n";
-
+return classDefinedProbabilitySet;
 };

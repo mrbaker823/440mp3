@@ -13,10 +13,16 @@ int main(int argc, char** argv)
 	std::cin >> testNum;
 	bool test = (testNum == 0) ? false:true;
 	ImageSet testSet = ImageSet(test);
-	std::cout << "Didn't segfault!\n";
-	//testSet.checkForNums(num);
-	testSet.makeClassAggregate(num);
-	std::cout << "Did segfault :(\n";
+	std::vector< std::vector<char> > theGoodShit = testSet.makeClassAggregate(num);
+
+	for (int i = 0; i<28; i++)
+	{
+		for (int j = 0; j<28; j++)
+		{
+			std::cout<<theGoodShit[i][j];
+		}
+		std::cout << "\n";
+	}
 
 return 0;
 }

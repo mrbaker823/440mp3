@@ -20,10 +20,10 @@ private:
 	int predictedClass;
 	int realClass;
 	std::vector<std::string> stringyImage;
+	std::vector< std::vector<char> > imageData;
 
 public:
 	
-	std::vector< std::vector<char> > imageData;
 	/*
 	constructors:
 	- default constructor
@@ -46,6 +46,10 @@ public:
 	- classify attempts to determine what number class the image defines
 	*/
 
+	char getCharAt(int x, int y)
+	{
+		return imageData[x][y];
+	}
 	int getRealClass()
 	{
 		return realClass;
